@@ -1,20 +1,31 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useRef, useEffect } from "react";
 import "./VideoCard.css";
 import CameraAltOutlinedIcon from "@material-ui/icons/CameraAltOutlined";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import handleViewport from "react-in-viewport";
+import { useStateValue } from "../../utils/StateProvider";
 
 function VideoCardSection({ videoSrc, inViewport, forwardedRef }) {
+    const [{ isPlaying }, dispatch] = useStateValue();
+
     useEffect(() => {
-        console.log(inViewport);
+        if (!inViewport) {
+            videoRef.current.pause();
+            dispatch({
+                type: "TOGGLE_PLAYING"
+            });
+        }
     }, [inViewport]);
 
     let videoRef = useRef(null);
-    let [isPlaying, setIsPlaying] = useState(true);
 
     function toggleVideo() {
-        isPlaying ? videoRef.current.play() : videoRef.current.pause();
-        setIsPlaying(!isPlaying);
+        isPlaying && inViewport
+            ? videoRef.current.play()
+            : videoRef.current.pause();
+        dispatch({
+            type: "TOGGLE_PLAYING"
+        });
     }
 
     return (
