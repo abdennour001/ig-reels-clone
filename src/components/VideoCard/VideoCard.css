@@ -1,2 +1,26 @@
 .video_card {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    scroll-snap-align: start;
+}
+
+.video_card__reel {
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+}
+
+.video_card__header {
+    position: absolute;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.video_card__header > * {
+    padding: 20px;
+    margin: 0;
 }
