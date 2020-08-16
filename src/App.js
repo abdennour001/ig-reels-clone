@@ -1,11 +1,32 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import VideoCard from "./components/VideoCard";
 import MovieIcon from "@material-ui/icons/Movie";
 import { useStateValue } from "./utils/StateProvider";
 
+// import firebase
+import { db } from "./utils/firebase";
+
 function App() {
     const [{ isPlaying }, dispatch] = useStateValue();
+    const [reels, setReels] = useState([]);
+
+    useEffect(() => {
+        getReels();
+    }, []);
+
+    const getReels = () => {
+        db.collection("reels")
+            .get()
+            .then(querySnapshot => {
+                querySnapshot.forEach(doc => {
+                    setReels(prev => [...prev, doc.data()]);
+                });
+            })
+            .catch(err => {
+                console.error(err.message);
+            });
+    };
 
     return (
         <div className="app">
@@ -27,7 +48,36 @@ function App() {
             </header>
             <main className="app__main">
                 {/* Reels component */}
-                <VideoCard
+                {reels.length === 0
+                    ? null
+                    : reels.map(
+                          ({
+                              accountName,
+                              accountImage,
+                              song,
+                              likes,
+                              comments,
+                              videoSrc
+                          }) => (
+                              <VideoCard
+                                  key={videoSrc + accountImage + likes}
+                                  onLeaveViewport={() => {
+                                      if (isPlaying) {
+                                          dispatch({
+                                              type: "TOGGLE_PLAYING"
+                                          });
+                                      }
+                                  }}
+                                  accountName={accountName}
+                                  accountImage={accountImage}
+                                  song={song}
+                                  likes={likes}
+                                  comments={comments}
+                                  videoSrc={videoSrc}
+                              />
+                          )
+                      )}
+                {/* <VideoCard
                     onLeaveViewport={() => {
                         isPlaying && dispatch({ type: "TOGGLE_PLAYING" });
                     }}
@@ -63,7 +113,7 @@ function App() {
                     likes={990}
                     comments={309}
                     videoSrc="https://scontent-mrs2-1.cdninstagram.com/v/t50.2886-16/117598442_205338364335864_545695080903278566_n.mp4?_nc_ht=scontent-mrs2-1.cdninstagram.com&_nc_cat=100&_nc_ohc=vjDPPklLnOYAX8-HsHQ&oe=5F3A4C4F&oh=c8e095a6ee74d4548b0b81348fd06ddc"
-                />
+                /> */}
             </main>
         </div>
     );

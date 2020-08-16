@@ -29,6 +29,7 @@ function VideoCardSection({
 
     useEffect(() => {
         if (!inViewport) {
+            console.log("Hi")
             videoRef.current.pause();
             dispatch({
                 type: "TOGGLE_PLAYING"
