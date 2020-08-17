@@ -1,3 +1,18 @@
+# Instagram Reels Clone with React JS and Firebase
+
+This is IG Reels clone built using React JS in the front-end and Firebase in the back-end to store the actual reels data.
+
+### Live Demo
+
+https://ig-reels-clone-2c363.web.app/
+
+### Technologies used
+
+-   ✅ REACT JS for front-end
+-   ✅ Redux
+-   ✅ Firebase (database ℹ️)
+-   ✅ Firebase Hosting to deploy 🚀
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
